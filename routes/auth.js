@@ -1,13 +1,17 @@
-const express = require('express')
+const express = require('express');
+const router = express.Router();
+const passport = require('passport');
 
-const router = express.Router()
+router.get(
+  '/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
 
-
-router.get('/google', (reqm,res)=>{
-  res.send('auth')
-})
-
-
-
-
-module.exports = router
+router.get(
+  '/google/callback',
+  passport.authenticate('google', { failureRedirect: '/' }),
+  (req, res) => {
+    res.redirect('/dashboard');
+  }
+);
+module.exports = router;

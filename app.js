@@ -6,7 +6,7 @@ const passport = require('passport')
 require('./config/passport')(passport)
 
 //load routes
-const auth = require('./routes/auth');
+const auth = require('./routes/auth' );
 
 const app = express();
 
