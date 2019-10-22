@@ -13,7 +13,9 @@
     "nodemon": "^1.19.3"
   },
   "dependencies": {
+    "cookie-parser": "^1.4.4",
     "express": "^4.17.1",
+    "express-session": "^1.17.0",
     "heroku": "^7.33.3",
     "mongoose": "^5.7.5",
     "passport": "^0.4.0",
