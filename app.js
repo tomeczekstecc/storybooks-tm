@@ -1,5 +1,6 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
+const path = require('path');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
@@ -13,6 +14,7 @@ require('./config/passport')(passport);
 //load routes
 const index = require('./routes/index');
 const auth = require('./routes/auth');
+const stories = require('./routes/stories');
 
 //load keys file
 const keys = require('./config/keys');
@@ -35,7 +37,7 @@ app.engine(
     defaultLayout: 'main'
   })
 );
-app.set('view engine', 'handlebars')
+app.set('view engine', 'handlebars');
 
 //
 app.use(cookieParser());
@@ -57,9 +59,13 @@ app.use((req, res, next) => {
   next();
 });
 
+//set static folder
+app.use(express.static(path.join(__dirname, 'public')));
+
 //use routes
 app.use('/auth', auth);
 app.use('/', index);
+app.use('/stories', stories);
 
 const PORT = process.env.PORT || 5000;
 
