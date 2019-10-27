@@ -1,6 +1,7 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
+const merthodOverride = require('method-override');
 const path = require('path');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
@@ -22,13 +23,18 @@ const stories = require('./routes/stories');
 const keys = require('./config/keys');
 
 //load helpers
-const { truncate, stripTags, formatDate } = require('./helpers/hbs');
+const {
+  truncate,
+  stripTags,
+  formatDate,
+  select,
+  editIcon
+} = require('./helpers/hbs');
 
 mongoose.Promise = global.Promise;
 //mongoose connect
 mongoose
-  .connect(keys.mongoURI,
-    { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB Connected...'))
   .catch(err => {
     console.log(err);
@@ -37,14 +43,19 @@ mongoose
 const app = express();
 
 //handlebars middleware
-app.engine('handlebars', exphbs({
-  helpers: {
-    truncate: truncate,
-    stripTags: stripTags,
-    formatDate: formatDate
-  },
-  defaultLayout: 'main'
-}));
+app.engine(
+  'handlebars',
+  exphbs({
+    helpers: {
+      truncate: truncate,
+      stripTags: stripTags,
+      formatDate: formatDate,
+      select: select,
+      editIcon: editIcon
+    },
+    defaultLayout: 'main'
+  })
+);
 app.set('view engine', 'handlebars');
 
 ////body-parser middleware
@@ -52,6 +63,9 @@ app.set('view engine', 'handlebars');
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
+
+//method override middleware
+app.use(merthodOverride('_method'));
 
 //
 app.use(cookieParser());
