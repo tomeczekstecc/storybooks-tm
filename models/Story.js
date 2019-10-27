@@ -11,7 +11,7 @@ const StorySchema = new Schema({
     type: String,
     required: true
   },
-  statuds: {
+  status: {
     type: String,
     default: 'public'
   },
@@ -27,24 +27,23 @@ const StorySchema = new Schema({
       },
       commentDate: {
         type: Date,
-        dafault: Date.now
+        default: Date.now
       },
       commentUser: {
         type: Schema.Types.ObjectId,
-        ref: 'user'
+        ref: 'users'
       }
     }
   ],
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'user'
+    ref: 'users'
   },
   date: {
     type: Date,
-    dafault: Date.now
+    default: Date.now
   }
 });
 
 //Create collection and add schema
 mongoose.model('stories', StorySchema, 'stories');
-
